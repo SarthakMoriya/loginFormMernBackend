@@ -1,25 +1,25 @@
 import { Router } from "express";
 
+import * as controller from "../controller/appController.js"
+
 const router = Router();
 
 /**POST Methods */
-router.route('/register').post((req, res) => {
-    res.status(201).json("Register Route")
-})
-router.route('/registerMail').post();
-router.route('/authenticate').post();
-router.route('/login').post();
+router.route('/register').post(controller.register);
+// router.route('/registerMail').post();
+// router.route('/authenticate').post();
+router.route('/login').post(controller.login);
 
 
 /**GET Methods */
-router.route('users/:username').get();
-router.route('/generateOTP').get();
-router.route('/verifyOTP').get();
-router.route('/createResetSession').get();
+router.route('users/:username').get(controller.getUser);
+router.route('/generateOTP').get(controller.generateOTP);
+router.route('/verifyOTP').get(controller.verifyOTP);
+router.route('/createResetSession').get(controller.createResetSession);
 
 /** PUT Methods */
 
-router.route('/updateUser').put();
-router.route('/resetPassword').put();
+router.route('/updateUser').put(controller.updateUser);
+router.route('/resetPassword').put(controller.resetPassword); 
 
-export default router;
+export default router;  
