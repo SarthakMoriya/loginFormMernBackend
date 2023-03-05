@@ -12,7 +12,7 @@ router.route('/login').post(controller.login);
 
 
 /**GET Methods */
-router.route('users/:username').get(controller.getUser);
+router.route('/users/:username').get(controller.getUser);
 router.route('/generateOTP').get(controller.generateOTP);
 router.route('/verifyOTP').get(controller.verifyOTP);
 router.route('/createResetSession').get(controller.createResetSession);
@@ -22,4 +22,4 @@ router.route('/createResetSession').get(controller.createResetSession);
 router.route('/updateUser').put(controller.updateUser);
 router.route('/resetPassword').put(controller.resetPassword); 
 
-export default router;  
+export default router;

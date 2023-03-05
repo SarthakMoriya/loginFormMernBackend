@@ -28,14 +28,14 @@ export async function register(req, res) {
             return res.status(401).json({ message: "Email already taken!" })
         }
         const hashedPassword = await bcrypt.hash(password, 12)
-        await UserModel.create({
+        const user = await UserModel.create({
             username,
             password: hashedPassword,
             email,
             profile: profile || ""
         })
 
-        res.status(201).json({ msg: "success" })
+        res.status(201).json({ msg: "success", data: user })
     } catch (error) {
         res.status(500).json({ msg: error })
     }
@@ -82,6 +82,26 @@ export async function login(req, res) {
     }
 }
 
+
+export async function getUser(req, res) {
+    const { username } = req.params;
+
+    try {
+        //Check username
+        const user = await UserModel.findOne({ _id: username });
+        if (!user) {
+            return res.status(402).json({ msg: "Please enter a valid username." });
+        }
+        //remove password and convert unwanted data and send only required data
+        const { password, ...restData } = await Object.assign({}, user.toJSON());
+        res.status(200).json({ msg: "Success", data: restData })
+
+
+    } catch (error) {
+        res.status(500).json({ msg: "No user found!" })
+    }
+}
+
 /** PUT: http://localhost:8080/api/updateuser 
  * @param: {
   "header" : "<token>"
@@ -93,12 +113,23 @@ body: {
 }
 */
 export async function updateUser(req, res) {
-    res.json("Update User Route")
-}
+    try {
+        const id = req.query.id;
 
+        if (id) {
+            const body = req.body;
 
-export async function getUser(req, res) {
-    res.json("Get User Route")
+            const updatedUser = await UserModel.findByIdAndUpdate({ _id: id }, body);
+
+            if (!updatedUser) {
+                res.status(500).json({ msg: "No user Found..." })
+            }
+
+            res.status(200).json({ msg: "User updated successfully" })
+        }
+    } catch (error) {
+        res.status(500).json({ msg: "No user Found..." })
+    }
 }
 
 
