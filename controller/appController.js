@@ -112,23 +112,50 @@ body: {
     profile : ''
 }
 */
+// export async function updateUser(req, res) {
+//     try {
+//         // const id = req.query.id;
+//         //we set req.user in the auth middleware
+//         const { userId } = req.user;
+//         console.log(req.user, req.body,id)
+
+//         if (userId) {
+//             const body = req.body;
+
+//             const updatedUser = await UserModel.findByIdAndUpdate({ _id: userId }, body);
+
+//             if (!updatedUser) {
+//                 res.status(500).json({ msg: "No user Found..." })
+//             }
+
+//             res.status(200).json({ msg: "User updated successfully" })
+//         }
+//     } catch (error) {
+//         res.status(500).json({ msg: "No user Found..." })
+//     }
+// }
+
 export async function updateUser(req, res) {
     try {
-        const id = req.query.id;
 
-        if (id) {
+        // const id = req.query.id;
+        const { userId } = req.user;
+
+        if (userId) {
             const body = req.body;
 
-            const updatedUser = await UserModel.findByIdAndUpdate({ _id: id }, body);
-
-            if (!updatedUser) {
-                res.status(500).json({ msg: "No user Found..." })
+            // update the data
+            const result = await UserModel.updateOne({ _id: userId }, body)
+            if (result) {
+                res.status(200).send(Object.assign({},result.toJSON()))
             }
 
-            res.status(200).json({ msg: "User updated successfully" })
+        } else {
+            return res.status(401).send({ error: "User Not Found...!" });
         }
+
     } catch (error) {
-        res.status(500).json({ msg: "No user Found..." })
+        return res.status(401).send({ error });
     }
 }
 
