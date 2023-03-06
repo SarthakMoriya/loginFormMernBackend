@@ -11,7 +11,7 @@ let nodeConfig = {
         pass: 'ypFdEJ8XteCh9Gf6CN', // generated ethereal password
     },
     tls: {
-        // do not fail on invalid certs
+        // do not fail on invalid certs yoyo
         rejectUnauthorized: false
     }
 }
