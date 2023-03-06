@@ -18,3 +18,11 @@ export default async function (req, res, next) {
         res.status(401).json({ err: error })
     }
 }
+
+export function localVariables(req, res, next) {
+    req.app.locals={
+        OTP:null,
+        resetSession:false
+    }
+    next();
+}
